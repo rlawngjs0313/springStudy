@@ -1,5 +1,6 @@
 package com.example.springstudy.domain.user.entity;
 
+import com.example.springstudy.domain.user.enums.Gender;
 import com.example.springstudy.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,31 +19,29 @@ public class UserInfo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_point")
+    @Column(name = "user_point", nullable = false)
     private int userPoint;
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", length = 10)
     private String nickname;
 
-    @Column(name = "gender")
-    private int gender;
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
-    @Column(name = "birth")
+    @Column(name = "birth", nullable = false)
     private LocalDate birth;
 
-    @Column(name = "city")
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 4)
     private String name;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "phone_num")
+    @Column(name = "phone_num", length = 13)
     private String phoneNum;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -20,7 +20,7 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "star")
+    @Column(name = "star", nullable = false)
     private int star;
 
     @Column(name = "review_content")

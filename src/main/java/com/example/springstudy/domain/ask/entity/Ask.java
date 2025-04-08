@@ -1,5 +1,7 @@
 package com.example.springstudy.domain.ask.entity;
 
+import com.example.springstudy.domain.ask.enums.AnsFlag;
+import com.example.springstudy.domain.ask.enums.AskType;
 import com.example.springstudy.global.entity.BaseEntity;
 import com.example.springstudy.mapping.UserAsk;
 import jakarta.persistence.*;
@@ -19,16 +21,18 @@ public class Ask extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ask_title")
+    @Column(name = "ask_title", nullable = false)
     private String askTitle;
 
     @Column(name = "ans_flag")
-    private int ansFlag;
+    @Enumerated(EnumType.STRING)
+    private AnsFlag ansFlag;
 
     @Column(name = "ask_type")
-    private String askType;
+    @Enumerated(EnumType.STRING)
+    private AskType askType;
 
-    @Column(name = "ask_content")
+    @Column(name = "ask_content", nullable = false)
     private String askContent;
 
     @OneToOne(mappedBy = "ask", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

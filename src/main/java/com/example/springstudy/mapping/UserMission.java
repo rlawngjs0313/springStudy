@@ -2,6 +2,7 @@ package com.example.springstudy.mapping;
 
 
 import com.example.springstudy.domain.mission.entity.Mission;
+import com.example.springstudy.domain.mission.enums.MissionCurrent;
 import com.example.springstudy.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +20,8 @@ public class UserMission {
     private Long id;
 
     @Column(name = "mission_current")
-    private int missionCurrent;
+    @Enumerated(EnumType.STRING)
+    private MissionCurrent missionCurrent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
