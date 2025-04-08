@@ -15,12 +15,12 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shopId;
 
-    @Column(name = "shop_name")
+    @Column(name = "shop_name", nullable = false)
     private String shopName;
 
-    @Column(name = "manager_id")
+    @Column(name = "manager_id", nullable = false)
     private Long managerId;
 
-    @Column(name = "shop_city")
+    @Column(name = "shop_city", nullable = false)
     private String shopCity;
 }

@@ -16,7 +16,7 @@ public class AskAns extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ans_content")
+    @Column(name = "ans_content", nullable = false)
     private String ansContent;
 
     @OneToOne(fetch = FetchType.LAZY)

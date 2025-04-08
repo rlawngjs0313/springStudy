@@ -1,5 +1,6 @@
 package com.example.springstudy.domain.user.entity;
 
+import com.example.springstudy.domain.user.enums.Food;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "userFavorite")
+@Table(name = "user_favorite")
 public class UserFavorite {
 
     @Id
@@ -16,7 +17,8 @@ public class UserFavorite {
     private Long id;
 
     @Column(name = "food")
-    private String food;
+    @Enumerated(EnumType.STRING)
+    private Food food;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

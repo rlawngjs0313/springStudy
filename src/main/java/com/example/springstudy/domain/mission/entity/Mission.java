@@ -22,13 +22,13 @@ public class Mission extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "mission_score")
+    @Column(name = "mission_score", nullable = false)
     private int missionScore;
 
-    @Column(name = "mission_time")
+    @Column(name = "mission_time", nullable = false)
     private LocalDateTime missionTime;
 
-    @Column(name = "mission_req")
+    @Column(name = "mission_req", nullable = false)
     private int missionReq;
 
     @OneToMany(mappedBy = "mission", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
