@@ -1,7 +1,6 @@
 package com.example.springstudy.domain.mission.entity;
 
 
-import com.example.springstudy.domain.review.entity.Review;
 import com.example.springstudy.domain.shop.entity.Shop;
 import com.example.springstudy.global.entity.BaseEntity;
 import com.example.springstudy.mapping.UserMission;
