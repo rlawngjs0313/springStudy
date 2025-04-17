@@ -119,14 +119,83 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
     }
 
     @Override
-    public MissionResDTO.HomePageDTO findAllByUserIdAndCity(Long userId, String city, String cursor, Pageable pageable) {
+    public MissionResDTO.HomePageDTO findFirstByUserIdAndCity(Long userId, String city, Pageable pageable) {
+
+        // 필요한 객체 조회
+        QUserMission userMission = QUserMission.userMission;
+        QShop shop = QShop.shop;
+        QUser user = QUser.user;
+        // 유저-미션 서브 쿼리 미리 빼놓기
+        JPQLQuery<Long> userMissionSubQuery = JPAExpressions
+                .select(userMission.id)
+                .from(userMission)
+                .where(
+                        userMission.id.eq(userId),
+                        userMission.missionCurrent.eq(MissionCurrent.BEFORE_PROGRESS)
+                );
+        // 커서 먼저 빼놓기
+        StringTemplate cursorValue = Expressions.stringTemplate(
+                "CONCAT(LPAD({0}, 10, '0'), LPAD({1}, 10, '0'))",
+                mission.missionTime,
+                mission.id
+        );
+        // 메인 쿼리
+        List<MissionResDTO.HomePageMissionDTO> missionList = queryFactory
+                .select(
+                        Projections.fields(
+                                MissionResDTO.HomePageMissionDTO.class,
+                                mission.id,
+                                mission.missionScore,
+                                mission.missionTime,
+                                mission.missionReq,
+                                mission.shop.shopName,
+                                cursorValue,
+                                mission.count().as("missionCnt")
+                        )
+                )
+                .from(mission)
+                .rightJoin(shop).on(mission.shop.shopId.eq(shop.shopId))
+                .where(
+                        mission.id.in(userMissionSubQuery),
+                        mission.shop.shopCity.eq(city)
+                )
+                .orderBy(mission.id.asc(), mission.missionTime.asc())
+                .limit(pageable.getPageSize())
+                .fetch();
+        // 유저 포인트 조회
+        Optional<Integer> userPoint = Optional.ofNullable(
+                queryFactory
+                        .select(user.userInfo.userPoint)
+                        .from(user)
+                        .where(user.id.eq(userId))
+                        .fetchOne()
+        );
+        userPoint.orElseThrow(() ->
+                new RuntimeException("Point not found"));
+        // 마지막 페이지 기준 커서값 생성
+        MissionResDTO.HomePageMissionDTO lastPage = missionList.get(missionList.size() - 1);
+        String resCursor = String.valueOf(Expressions.stringTemplate(
+                "CONCAT(LPAD({0}, 10, '0'), LPAD({1}, 10, '0'))",
+                lastPage.missionTime(),
+                lastPage.missionId()
+        ));
+        return MissionConverter.toHomePageDTO(
+                missionList,
+                userPoint.get(),
+                missionList.size(),
+                resCursor,
+                pageable.getPageSize()
+        );
+    }
+
+    @Override
+    public MissionResDTO.HomePageDTO findAllByUserIdAndCityByCursor(Long userId, String city, String cursor, Pageable pageable) {
 
         // 필요한 객체 조회
         QUserMission userMission = QUserMission.userMission;
         QShop shop = QShop.shop;
         QUser user = QUser.user;
 
-        List<MissionResDTO.HomePageMissionDTO> missionList;
         String resCursor;
         // 유저-미션 서브 쿼리 미리 빼놓기
         JPQLQuery<Long> userMissionSubQuery = JPAExpressions
@@ -152,32 +221,8 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
         );
         userPoint.orElseThrow(() ->
                 new RuntimeException("Point not found"));
-        // 처음 조회하는 경우
-        if (cursor.isEmpty()){
-            missionList = queryFactory
-                    .select(
-                            Projections.fields(
-                                    MissionResDTO.HomePageMissionDTO.class,
-                                    mission.id,
-                                    mission.missionScore,
-                                    mission.missionTime,
-                                    mission.missionReq,
-                                    mission.shop.shopName,
-                                    cursorValue,
-                                    mission.count().as("missionCnt")
-                            )
-                    )
-                    .from(mission)
-                    .rightJoin(shop).on(mission.shop.shopId.eq(shop.shopId))
-                    .where(
-                            mission.id.in(userMissionSubQuery),
-                            mission.shop.shopCity.eq(city)
-                    )
-                    .orderBy(mission.id.asc(), mission.missionTime.asc())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-        } else {
-            missionList = queryFactory
+        // 메인 쿼리
+        List<MissionResDTO.HomePageMissionDTO> missionList = queryFactory
                     .select(
                             Projections.fields(
                                     MissionResDTO.HomePageMissionDTO.class,
@@ -200,7 +245,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
                     .orderBy(cursorValue.desc())
                     .limit(pageable.getPageSize())
                     .fetch();
-        }
+
         // 마지막 페이지 기준 커서값 생성
         MissionResDTO.HomePageMissionDTO lastPage = missionList.get(missionList.size() - 1);
         resCursor = String.valueOf(Expressions.stringTemplate(
