@@ -15,6 +15,8 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,8 +30,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
     private final QMission mission = QMission.mission;
 
     @Override
-    public MissionResDTO.PageMissionDTO findAllByMissionCurrent(String missionCurrent, Long userId, Long cursor, Pageable pageable) {
-
+    public Slice<MissionResDTO.MissionDTO> findFirstByMissionCurrent(String missionCurrent, Long userId, Pageable pageable) {
         // 필요한 엔티티 선언
         QShop shop = QShop.shop;
         QUserMission userMission = QUserMission.userMission;
@@ -41,59 +42,80 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
                 .where(userMission.missionCurrent.eq(MissionCurrent.valueOf(missionCurrent))
                         .and(userMission.user.id.eq(userId))
                 );
-
-        List<MissionResDTO.MissionDTO> content;
-        // 처음 조회할때
-        if (cursor == -1) {
-            content = queryFactory
-                    .select(
-                            Projections.fields(MissionResDTO.MissionDTO.class,
-                                    mission.id,
-                                    mission.missionTime,
-                                    mission.missionReq,
-                                    mission.missionScore,
-                                    mission.shop.shopName
-                            )
-                    )
-                    .from(mission)
-                    .join(mission.shop, shop)
-                    .on(shop.shopId.eq(mission.shop.shopId))
-                    .where(
-                            mission.id.in(userMissionSubQuery)
-                    )
-                    .orderBy(mission.id.asc())
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-        } else {
-            content = queryFactory
-                    .select(
-                            Projections.fields(MissionResDTO.MissionDTO.class,
-                                    mission.id,
-                                    mission.missionTime,
-                                    mission.missionReq,
-                                    mission.missionScore,
-                                    mission.shop.shopName
-                            )
-                    )
-                    .from(mission)
-                    .join(mission.shop, shop)
-                    .on(shop.shopId.eq(mission.shop.shopId))
-                    .where(
-                            mission.id.in(userMissionSubQuery),
-                            mission.id.goe(cursor)
-                    )
-                    .orderBy(mission.id.asc())
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
+        List<MissionResDTO.MissionDTO> content = queryFactory
+                .select(
+                        Projections.fields(MissionResDTO.MissionDTO.class,
+                                mission.id,
+                                mission.missionTime,
+                                mission.missionReq,
+                                mission.missionScore,
+                                mission.shop.shopName
+                        )
+                )
+                .from(mission)
+                .join(mission.shop, shop)
+                .on(shop.shopId.eq(mission.shop.shopId))
+                .where(
+                        mission.id.in(userMissionSubQuery)
+                )
+                .orderBy(mission.id.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize()+1)
+                .fetch();
+        boolean hasNext = false;
+        if (content.size() > pageable.getPageSize()) {
+            content.remove(pageable.getPageSize());
+            hasNext = true;
         }
-        Long resCursor = content.get(content.size()-1).missionId();
-        return MissionConverter.toPageMissionDTO(
-                content,
-                resCursor,
-                content.size()
-        );
+        return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    @Override
+    public Slice<MissionResDTO.MissionDTO> findAllByMissionCurrentOrderByCursor(
+            String missionCurrent,
+            Long userId,
+            Long cursor,
+            Pageable pageable
+    ) {
+        // 필요한 엔티티 선언
+        QShop shop = QShop.shop;
+        QUserMission userMission = QUserMission.userMission;
+
+        // 서브 쿼리 먼저 꺼내기
+        JPQLQuery<Long> userMissionSubQuery = JPAExpressions
+                .select(userMission.mission.id)
+                .from(userMission)
+                .where(userMission.missionCurrent.eq(MissionCurrent.valueOf(missionCurrent))
+                        .and(userMission.user.id.eq(userId))
+                );
+        List<MissionResDTO.MissionDTO> content = queryFactory
+                .select(
+                        Projections.fields(MissionResDTO.MissionDTO.class,
+                                mission.id,
+                                mission.missionTime,
+                                mission.missionReq,
+                                mission.missionScore,
+                                mission.shop.shopName
+                        )
+                )
+                .from(mission)
+                .join(mission.shop, shop)
+                .on(shop.shopId.eq(mission.shop.shopId))
+                .where(
+                        mission.id.in(userMissionSubQuery),
+                        mission.id.goe(cursor)
+                )
+                .orderBy(mission.id.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize()+1)
+                .fetch();
+        //Slice Page 정보 생성
+        boolean hasNext = false;
+        if (content.size() > pageable.getPageSize()) {
+            content.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(content, pageable, hasNext);
     }
 
     @Override
