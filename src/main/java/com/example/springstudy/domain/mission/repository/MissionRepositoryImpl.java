@@ -30,36 +30,70 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
     @Override
     public MissionResDTO.PageMissionDTO findAllByMissionCurrent(String missionCurrent, Long userId, Long cursor, Pageable pageable) {
 
+        // 필요한 엔티티 선언
+        QShop shop = QShop.shop;
+        QUserMission userMission = QUserMission.userMission;
 
-        List<MissionResDTO.MissionDTO> content = queryFactory
-                .select(
-                        Projections.fields(MissionResDTO.MissionDTO.class,
-                                mission.id,
-                                mission.missionTime,
-                                mission.missionReq,
-                                mission.missionScore,
-                                mission.shop.shopName
-                        )
-                )
-                .from(mission)
-                .join(mission.shop, QShop.shop)
-                .on(QShop.shop.shopId.eq(mission.shop.shopId))
-                .where(
-                        mission.id.in(
-                                JPAExpressions
-                                        .select(QUserMission.userMission.mission.id)
-                                        .from(QUserMission.userMission)
-                                        .where(QUserMission.userMission.missionCurrent.eq(MissionCurrent.valueOf(missionCurrent))
-                                                .and(QUserMission.userMission.user.id.eq(userId))
-                                        )
-                        )
-                                .and(mission.id.goe(cursor))
-                )
-                .orderBy(mission.id.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-        return MissionConverter.toPageMissionDTO(content);
+        // 서브 쿼리 먼저 꺼내기
+        JPQLQuery<Long> userMissionSubQuery = JPAExpressions
+                .select(userMission.mission.id)
+                .from(userMission)
+                .where(userMission.missionCurrent.eq(MissionCurrent.valueOf(missionCurrent))
+                        .and(userMission.user.id.eq(userId))
+                );
+
+        List<MissionResDTO.MissionDTO> content;
+        // 처음 조회할때
+        if (cursor == -1) {
+            content = queryFactory
+                    .select(
+                            Projections.fields(MissionResDTO.MissionDTO.class,
+                                    mission.id,
+                                    mission.missionTime,
+                                    mission.missionReq,
+                                    mission.missionScore,
+                                    mission.shop.shopName
+                            )
+                    )
+                    .from(mission)
+                    .join(mission.shop, shop)
+                    .on(shop.shopId.eq(mission.shop.shopId))
+                    .where(
+                            mission.id.in(userMissionSubQuery)
+                    )
+                    .orderBy(mission.id.asc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        } else {
+            content = queryFactory
+                    .select(
+                            Projections.fields(MissionResDTO.MissionDTO.class,
+                                    mission.id,
+                                    mission.missionTime,
+                                    mission.missionReq,
+                                    mission.missionScore,
+                                    mission.shop.shopName
+                            )
+                    )
+                    .from(mission)
+                    .join(mission.shop, shop)
+                    .on(shop.shopId.eq(mission.shop.shopId))
+                    .where(
+                            mission.id.in(userMissionSubQuery),
+                            mission.id.goe(cursor)
+                    )
+                    .orderBy(mission.id.asc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        }
+        Long resCursor = content.get(content.size()-1).missionId();
+        return MissionConverter.toPageMissionDTO(
+                content,
+                resCursor,
+                content.size()
+        );
     }
 
     @Override

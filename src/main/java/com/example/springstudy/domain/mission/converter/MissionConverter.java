@@ -7,9 +7,15 @@ import java.util.List;
 public class MissionConverter {
 
     // List<MissionDTO> -> PageMissionDTO
-    public static MissionResDTO.PageMissionDTO toPageMissionDTO(List<MissionResDTO.MissionDTO> MissionList) {
+    public static MissionResDTO.PageMissionDTO toPageMissionDTO(
+            List<MissionResDTO.MissionDTO> MissionList,
+            Long cursor,
+            int size
+    ) {
         return MissionResDTO.PageMissionDTO.builder()
                 .missionDTOList(MissionList)
+                .cursor(cursor)
+                .size(size)
                 .build();
     }
 

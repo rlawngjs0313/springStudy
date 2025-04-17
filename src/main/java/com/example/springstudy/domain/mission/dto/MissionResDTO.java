@@ -21,7 +21,7 @@ public class MissionResDTO {
     ) {}
 
     @Builder
-    public record PageMissionDTO(List<MissionDTO> missionDTOList, int cursor, int size) {}
+    public record PageMissionDTO(List<MissionDTO> missionDTOList, Long cursor, int size) {}
 
     @Builder
     public record HomePageDTO(
