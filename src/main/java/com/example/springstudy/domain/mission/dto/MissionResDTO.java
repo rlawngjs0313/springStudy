@@ -10,5 +10,25 @@ public class MissionResDTO {
     public record MissionDTO(int missionScore, int missionRq, String shopName, Long missionId) {}
 
     @Builder
+    public record HomePageMissionDTO(
+            int missionId,
+            int missionScore,
+            int missionTime,
+            int missionRq,
+            String shopName,
+            String cursor,
+            int missionCnt
+    ) {}
+
+    @Builder
     public record PageMissionDTO(List<MissionDTO> missionDTOList, int cursor, int size) {}
+
+    @Builder
+    public record HomePageDTO(
+            int userPoint,
+            int missionCnt,
+            List<HomePageMissionDTO> missionDTOList,
+            String cursor,
+            int size
+    ) {}
 }

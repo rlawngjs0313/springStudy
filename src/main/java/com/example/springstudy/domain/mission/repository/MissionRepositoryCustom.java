@@ -8,5 +8,11 @@ import org.springframework.data.domain.Slice;
 import java.util.List;
 
 public interface MissionRepositoryCustom {
-    MissionResDTO.PageMissionDTO findAllByMissionCurrent(String missionCurrent, Long userId, Long cursor, Pageable pageable);
+    MissionResDTO.PageMissionDTO findAllByMissionCurrent(
+            String missionCurrent,
+            Long userId,
+            Long cursor,
+            Pageable pageable
+    );
+    MissionResDTO.HomePageDTO findAllByUserIdAndCity(Long userId, String city, String cursor, Pageable pageable);
 }
