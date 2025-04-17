@@ -1,7 +1,6 @@
 package com.example.springstudy.domain.mission.converter;
 
 import com.example.springstudy.domain.mission.dto.MissionResDTO;
-import com.querydsl.core.types.dsl.NumberPath;
 
 import java.util.List;
 

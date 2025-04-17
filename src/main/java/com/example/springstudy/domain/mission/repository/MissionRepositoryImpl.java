@@ -2,25 +2,19 @@ package com.example.springstudy.domain.mission.repository;
 
 import com.example.springstudy.domain.mission.converter.MissionConverter;
 import com.example.springstudy.domain.mission.dto.MissionResDTO;
-import com.example.springstudy.domain.mission.entity.Mission;
 import com.example.springstudy.domain.mission.entity.QMission;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
 import com.example.springstudy.domain.shop.entity.QShop;
 import com.example.springstudy.domain.user.entity.QUser;
-import com.example.springstudy.domain.user.entity.QUserInfo;
 import com.example.springstudy.mapping.QUserMission;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.eclipse.jdt.internal.compiler.ast.NullLiteral;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
