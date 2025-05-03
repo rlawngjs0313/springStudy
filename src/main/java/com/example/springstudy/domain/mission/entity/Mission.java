@@ -31,7 +31,7 @@ public class Mission extends BaseEntity {
     @Column(name = "mission_req", nullable = false)
     private int missionReq;
 
-    @OneToMany(mappedBy = "mission", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "mission", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserMission> userMissionList;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -38,6 +38,6 @@ public class Ask extends BaseEntity {
     @OneToOne(mappedBy = "ask", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private AskAns askAns;
 
-    @OneToMany(mappedBy = "ask", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "ask", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserAsk> userAskList;
 }

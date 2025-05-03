@@ -26,7 +26,7 @@ public class Review extends BaseEntity {
     @Column(name = "review_content")
     private String reviewContent;
 
-    @OneToMany(mappedBy = "review", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserReview> userReviewList;
 
     @OneToOne(mappedBy = "review", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
