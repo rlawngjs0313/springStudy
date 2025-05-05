@@ -2,7 +2,7 @@ package com.example.springstudy.domain.review.entity;
 
 import com.example.springstudy.domain.shop.entity.Shop;
 import com.example.springstudy.global.entity.BaseEntity;
-import com.example.springstudy.mapping.UserReview;
+import com.example.springstudy.global.mapping.UserReview;
 import jakarta.persistence.*;
 import lombok.*;
 

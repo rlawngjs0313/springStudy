@@ -6,12 +6,12 @@ import com.example.springstudy.domain.mission.entity.QMission;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
 import com.example.springstudy.domain.shop.entity.QShop;
 import com.example.springstudy.domain.user.entity.QUser;
-import com.example.springstudy.mapping.QUserMission;
+import com.example.springstudy.global.mapping.QUserMission;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.JPQLSubQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +36,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
         QUserMission userMission = QUserMission.userMission;
 
         // 서브 쿼리 먼저 꺼내기
-        JPQLQuery<Long> userMissionSubQuery = JPAExpressions
+        JPQLSubQuery<Long> userMissionSubQuery = JPAExpressions
                 .select(userMission.mission.id)
                 .from(userMission)
                 .where(userMission.missionCurrent.eq(MissionCurrent.valueOf(missionCurrent))
@@ -82,7 +82,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
         QUserMission userMission = QUserMission.userMission;
 
         // 서브 쿼리 먼저 꺼내기
-        JPQLQuery<Long> userMissionSubQuery = JPAExpressions
+        JPQLSubQuery<Long> userMissionSubQuery = JPAExpressions
                 .select(userMission.mission.id)
                 .from(userMission)
                 .where(userMission.missionCurrent.eq(MissionCurrent.valueOf(missionCurrent))
@@ -129,7 +129,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
         List<MissionResDTO.HomePageMissionDTO> missionList;
         String resCursor;
         // 유저-미션 서브 쿼리 미리 빼놓기
-        JPQLQuery<Long> userMissionSubQuery = JPAExpressions
+        JPQLSubQuery<Long> userMissionSubQuery = JPAExpressions
                 .select(userMission.id)
                 .from(userMission)
                 .where(

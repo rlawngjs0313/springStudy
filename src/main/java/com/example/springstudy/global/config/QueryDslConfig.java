@@ -1,4 +1,4 @@
-package com.example.springstudy.config;
+package com.example.springstudy.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

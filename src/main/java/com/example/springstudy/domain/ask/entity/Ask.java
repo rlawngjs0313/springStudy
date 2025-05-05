@@ -3,7 +3,7 @@ package com.example.springstudy.domain.ask.entity;
 import com.example.springstudy.domain.ask.enums.AnsFlag;
 import com.example.springstudy.domain.ask.enums.AskType;
 import com.example.springstudy.global.entity.BaseEntity;
-import com.example.springstudy.mapping.UserAsk;
+import com.example.springstudy.global.mapping.UserAsk;
 import jakarta.persistence.*;
 import lombok.*;
 

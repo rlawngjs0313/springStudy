@@ -1,4 +1,4 @@
-package com.example.springstudy.mapping;
+package com.example.springstudy.global.mapping;
 
 
 import com.example.springstudy.domain.mission.entity.Mission;

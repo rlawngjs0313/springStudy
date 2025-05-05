@@ -3,7 +3,7 @@ package com.example.springstudy.domain.mission.entity;
 
 import com.example.springstudy.domain.shop.entity.Shop;
 import com.example.springstudy.global.entity.BaseEntity;
-import com.example.springstudy.mapping.UserMission;
+import com.example.springstudy.global.mapping.UserMission;
 import jakarta.persistence.*;
 import lombok.*;
 

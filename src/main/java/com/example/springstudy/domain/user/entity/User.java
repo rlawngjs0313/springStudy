@@ -1,9 +1,9 @@
 package com.example.springstudy.domain.user.entity;
 
 import com.example.springstudy.global.entity.BaseEntity;
-import com.example.springstudy.mapping.UserAsk;
-import com.example.springstudy.mapping.UserMission;
-import com.example.springstudy.mapping.UserReview;
+import com.example.springstudy.global.mapping.UserAsk;
+import com.example.springstudy.global.mapping.UserMission;
+import com.example.springstudy.global.mapping.UserReview;
 import jakarta.persistence.*;
 import lombok.*;
 
