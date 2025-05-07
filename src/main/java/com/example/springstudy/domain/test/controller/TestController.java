@@ -5,6 +5,8 @@ import com.example.springstudy.domain.test.converter.TestConverter;
 import com.example.springstudy.domain.test.dto.TestResDTO;
 import com.example.springstudy.domain.test.service.query.TestQueryServiceImpl;
 import com.example.springstudy.global.apiPayload.ApiResponse;
+import com.example.springstudy.global.apiPayload.code.BaseCode;
+import com.example.springstudy.global.apiPayload.code.SuccessStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +22,22 @@ public class TestController {
 
     @GetMapping("/test")
     public ApiResponse<TestResDTO.TestDTO> test() {
-        return ApiResponse.onSuccess(TestConverter.toTestDTO("ThisIsTest"));
+        BaseCode code = SuccessStatus.OK;
+        return ApiResponse.onSuccess(
+                code.getCode(),
+                code.getMessage(),
+                TestConverter.toTestDTO("ThisIsTest")
+        );
     }
 
     @GetMapping("/exception")
     public ApiResponse<TestResDTO.TestExceptionDTO> exception(@RequestParam int flag) {
         testQueryService.CheckFlag(flag);
-        return ApiResponse.onSuccess(TestConverter.toTestExceptionDTO(flag));
+        BaseCode code = SuccessStatus.OK;
+        return ApiResponse.onSuccess(
+                code.getCode(),
+                code.getMessage(),
+                TestConverter.toTestExceptionDTO(flag)
+        );
     }
 }
