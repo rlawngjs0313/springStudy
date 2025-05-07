@@ -1,10 +1,10 @@
 package com.example.springstudy.global.apiPayload.code;
 
-import com.example.springstudy.global.apiPayload.dto.ReasonDTO;
+import org.springframework.http.HttpStatus;
 
 public interface BaseCode {
 
-    ReasonDTO getReason();
-
-    ReasonDTO getReasonHttpStatus();
+    HttpStatus getStatus();
+    String getCode();
+    String getMessage();
 }

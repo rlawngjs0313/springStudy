@@ -1,13 +1,11 @@
 package com.example.springstudy.global.apiPayload.code;
 
-import com.example.springstudy.global.apiPayload.dto.ErrorReasonDTO;
-import com.example.springstudy.global.apiPayload.dto.ReasonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
 @AllArgsConstructor
+@Getter
 public enum ErrorStatus implements BaseErrorCode {
 
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못돤 요청입니다."),
@@ -20,23 +18,4 @@ public enum ErrorStatus implements BaseErrorCode {
     private final HttpStatus status;
     private final String code;
     private final String message;
-
-    @Override
-    public ErrorReasonDTO getReason() {
-        return ErrorReasonDTO.builder()
-                .message(message)
-                .code(code)
-                .isSuccess(true)
-                .build();
-    }
-
-    @Override
-    public ErrorReasonDTO getReasonHttpStatus() {
-        return ErrorReasonDTO.builder()
-                .message(message)
-                .code(code)
-                .isSuccess(true)
-                .status(status)
-                .build();
-    }
 }
