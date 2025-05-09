@@ -1,23 +1,31 @@
 package com.example.springstudy.domain.mission.repository;
 
 import com.example.springstudy.domain.mission.converter.MissionConverter;
-import com.example.springstudy.domain.mission.dto.MissionResDTO;
+import com.example.springstudy.domain.mission.dto.request.MissionReqDTO;
+import com.example.springstudy.domain.mission.dto.response.MissionResDTO;
 import com.example.springstudy.domain.mission.entity.QMission;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
+import com.example.springstudy.domain.mission.exception.MissionException;
+import com.example.springstudy.domain.mission.exception.code.MissionErrorCode;
 import com.example.springstudy.domain.shop.entity.QShop;
 import com.example.springstudy.domain.user.entity.QUser;
+import com.example.springstudy.global.apiPayload.exception.GeneralException;
 import com.example.springstudy.global.mapping.QUserMission;
+import com.example.springstudy.global.mapping.UserMission;
+import com.example.springstudy.global.validation.annotation.HasInProgress;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLSubQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
@@ -171,7 +179,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
                     .rightJoin(shop).on(mission.shop.shopId.eq(shop.shopId))
                     .where(
                             mission.id.in(userMissionSubQuery),
-                            mission.shop.shopCity.eq(city)
+                            mission.shop.region.regionName.eq(city)
                     )
                     .orderBy(mission.id.asc(), mission.missionTime.asc())
                     .limit(pageable.getPageSize())
@@ -194,7 +202,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
                     .rightJoin(shop).on(mission.shop.shopId.eq(shop.shopId))
                     .where(
                             mission.id.in(userMissionSubQuery),
-                            mission.shop.shopCity.eq(city),
+                            mission.shop.region.regionName.eq(city),
                             cursorValue.gt(cursor)
                     )
                     .orderBy(cursorValue.desc())
@@ -216,4 +224,30 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
                 pageable.getPageSize()
         );
     }
+
+    @Override
+    public void updateMissionCurrent(MissionReqDTO.ValidMissionCurrent dto) {
+
+        // 객체 조회
+        QUserMission userMission = QUserMission.userMission;
+
+        queryFactory.update(userMission)
+                .set(userMission.missionCurrent, MissionCurrent.IN_PROGRESS)
+                .where(userMission.user.id.eq(dto.userId()).and(userMission.mission.id.eq(dto.missionId())))
+                .execute();
+
+    }
+
+    @Override
+    public MissionCurrent findByUserIdAndMissionId(Long userId, Long missionId) {
+
+        QUserMission userMission = QUserMission.userMission;
+
+        return queryFactory.select(userMission.missionCurrent)
+                .from(userMission)
+                .where(userMission.user.id.eq(userId).and(userMission.mission.id.eq(missionId)))
+                .fetchOne();
+    }
+
+
 }

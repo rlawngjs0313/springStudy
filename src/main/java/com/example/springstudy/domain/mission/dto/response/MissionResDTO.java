@@ -1,4 +1,4 @@
-package com.example.springstudy.domain.mission.dto;
+package com.example.springstudy.domain.mission.dto.response;
 
 import lombok.Builder;
 
