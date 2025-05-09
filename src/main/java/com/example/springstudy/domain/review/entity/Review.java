@@ -21,7 +21,7 @@ public class Review extends BaseEntity {
     private Long id;
 
     @Column(name = "star", nullable = false)
-    private int star;
+    private Long star;
 
     @Column(name = "review_content")
     private String reviewContent;
