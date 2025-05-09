@@ -7,6 +7,7 @@ import com.example.springstudy.domain.user.exception.code.UserSuccessCode;
 import com.example.springstudy.domain.user.service.command.UserCommandServiceImpl;
 import com.example.springstudy.domain.user.service.query.UserQueryService;
 import com.example.springstudy.global.apiPayload.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ApiResponse<Void> signUp(
-            @RequestBody UserReqDTO.SignUp dto
+            @Valid @RequestBody UserReqDTO.SignUp dto
     ) {
         userCommandService.signUp(dto);
         UserSuccessCode code = UserSuccessCode.SIGN_UP;
@@ -34,7 +35,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ApiResponse<UserResDTO.UserLogin> login(
-            @RequestBody UserReqDTO.SignIn dto
+            @Valid @RequestBody UserReqDTO.SignIn dto
     ) {
         UserResDTO.UserLogin userLogin = userCommandService.login(dto);
         UserSuccessCode code = UserSuccessCode.LOGIN;

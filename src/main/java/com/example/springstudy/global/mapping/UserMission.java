@@ -19,9 +19,9 @@ public class UserMission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "mission_current")
+    @Column(name = "mission_current", nullable = false)
     @Enumerated(EnumType.STRING)
-    private MissionCurrent missionCurrent;
+    private MissionCurrent missionCurrent = MissionCurrent.BEFORE_PROGRESS;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
@@ -30,4 +30,9 @@ public class UserMission {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    // 미션 진행 상황 변경
+    public void updateMissionCurrent(MissionCurrent missionCurrent) {
+        this.missionCurrent = missionCurrent;
+    }
 }
