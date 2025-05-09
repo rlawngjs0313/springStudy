@@ -1,6 +1,5 @@
 package com.example.springstudy.domain.user.converter;
 
-import com.example.springstudy.domain.user.dto.request.UserReqDTO;
 import com.example.springstudy.domain.user.dto.response.UserResDTO;
 import com.example.springstudy.domain.user.entity.User;
 

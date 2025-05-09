@@ -4,7 +4,6 @@ import com.example.springstudy.domain.user.converter.UserConverter;
 import com.example.springstudy.domain.user.dto.response.UserResDTO;
 import com.example.springstudy.domain.user.entity.User;
 import com.example.springstudy.global.util.JwtUtil;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

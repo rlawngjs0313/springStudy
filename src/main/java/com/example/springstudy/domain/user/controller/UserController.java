@@ -2,14 +2,11 @@ package com.example.springstudy.domain.user.controller;
 
 import com.example.springstudy.domain.user.dto.request.UserReqDTO;
 import com.example.springstudy.domain.user.dto.response.UserResDTO;
-import com.example.springstudy.domain.user.entity.User;
 import com.example.springstudy.domain.user.exception.code.UserSuccessCode;
 import com.example.springstudy.domain.user.service.command.UserCommandServiceImpl;
-import com.example.springstudy.domain.user.service.query.UserQueryService;
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

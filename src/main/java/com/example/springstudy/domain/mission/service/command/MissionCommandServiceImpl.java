@@ -13,16 +13,9 @@ import com.example.springstudy.domain.shop.exception.ShopException;
 import com.example.springstudy.domain.shop.exception.code.ShopErrorCode;
 import com.example.springstudy.domain.shop.repository.ShopRepository;
 import com.example.springstudy.domain.user.entity.User;
-import com.example.springstudy.domain.user.exception.UserException;
-import com.example.springstudy.domain.user.exception.code.UserErrorCode;
-import com.example.springstudy.domain.user.repository.UserRepository;
 import com.example.springstudy.domain.user.service.query.UserQueryService;
 import com.example.springstudy.global.mapping.UserMission;
-import com.example.springstudy.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service

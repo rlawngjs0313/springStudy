@@ -3,7 +3,6 @@ package com.example.springstudy.domain.review.controller;
 import com.example.springstudy.domain.review.dto.request.ReviewReqDTO;
 import com.example.springstudy.domain.review.exception.code.ReviewSuccessCode;
 import com.example.springstudy.domain.review.service.command.ReviewCommandService;
-import com.example.springstudy.domain.shop.exception.code.ShopSuccessCode;
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.apiPayload.code.BaseCode;
 import com.example.springstudy.global.validation.annotation.ExistShop;

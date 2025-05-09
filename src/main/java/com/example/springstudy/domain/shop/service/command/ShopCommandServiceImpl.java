@@ -1,7 +1,6 @@
 package com.example.springstudy.domain.shop.service.command;
 
 import com.example.springstudy.domain.shop.converter.ShopConverter;
-import com.example.springstudy.domain.shop.dto.request.RegionReqDTO;
 import com.example.springstudy.domain.shop.dto.request.ShopReqDTO;
 import com.example.springstudy.domain.shop.entity.Region;
 import com.example.springstudy.domain.shop.exception.RegionException;

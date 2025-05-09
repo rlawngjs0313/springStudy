@@ -5,17 +5,14 @@ import com.example.springstudy.domain.shop.exception.code.ShopErrorCode;
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.apiPayload.code.BaseErrorCode;
 import com.example.springstudy.global.apiPayload.code.ErrorStatus;
-import com.example.springstudy.global.validation.annotation.ExistShop;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

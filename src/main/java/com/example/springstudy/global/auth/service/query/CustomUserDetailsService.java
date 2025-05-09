@@ -7,7 +7,6 @@ import com.example.springstudy.domain.user.repository.UserRepository;
 import com.example.springstudy.global.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

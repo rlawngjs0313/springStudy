@@ -9,8 +9,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class ShopExistValidator implements ConstraintValidator<ExistShop, Object> {

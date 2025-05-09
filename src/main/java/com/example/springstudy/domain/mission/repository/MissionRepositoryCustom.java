@@ -3,7 +3,6 @@ package com.example.springstudy.domain.mission.repository;
 import com.example.springstudy.domain.mission.dto.request.MissionReqDTO;
 import com.example.springstudy.domain.mission.dto.response.MissionResDTO;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
-import com.example.springstudy.global.mapping.UserMission;
 import com.example.springstudy.global.validation.annotation.HasInProgress;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

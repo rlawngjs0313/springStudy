@@ -1,13 +1,11 @@
 package com.example.springstudy.domain.mission.controller;
 
-import com.example.springstudy.domain.mission.converter.MissionConverter;
 import com.example.springstudy.domain.mission.dto.request.MissionReqDTO;
 import com.example.springstudy.domain.mission.exception.code.MissionSuccessCode;
 import com.example.springstudy.domain.mission.service.command.MissionCommandService;
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.apiPayload.code.BaseCode;
 import com.example.springstudy.global.validation.annotation.ExistShop;
-import com.example.springstudy.global.validation.annotation.HasInProgress;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

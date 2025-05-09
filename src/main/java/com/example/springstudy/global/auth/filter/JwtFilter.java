@@ -1,10 +1,7 @@
 package com.example.springstudy.global.auth.filter;
 
 
-import com.example.springstudy.domain.user.entity.User;
-import com.example.springstudy.domain.user.exception.code.UserErrorCode;
 import com.example.springstudy.global.apiPayload.ApiResponse;
-import com.example.springstudy.global.apiPayload.code.BaseErrorCode;
 import com.example.springstudy.global.auth.service.query.CustomUserDetailsService;
 import com.example.springstudy.global.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

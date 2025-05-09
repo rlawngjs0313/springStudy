@@ -3,7 +3,6 @@ package com.example.springstudy.global.validation.validator;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
 import com.example.springstudy.domain.mission.exception.code.MissionErrorCode;
 import com.example.springstudy.domain.mission.repository.MissionRepository;
-import com.example.springstudy.domain.mission.repository.UserMissionRepository;
 import com.example.springstudy.domain.user.service.query.UserQueryService;
 import com.example.springstudy.global.validation.annotation.HasInProgress;
 import jakarta.validation.ConstraintValidator;

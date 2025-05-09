@@ -1,11 +1,8 @@
 package com.example.springstudy.domain.shop.service.command;
 
 import com.example.springstudy.domain.shop.converter.RegionConverter;
-import com.example.springstudy.domain.shop.converter.ShopConverter;
 import com.example.springstudy.domain.shop.dto.request.RegionReqDTO;
 import com.example.springstudy.domain.shop.entity.Region;
-import com.example.springstudy.domain.shop.exception.RegionException;
-import com.example.springstudy.domain.shop.exception.code.RegionErrorCode;
 import com.example.springstudy.domain.shop.repository.RegionRepository;
 import com.example.springstudy.domain.shop.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;

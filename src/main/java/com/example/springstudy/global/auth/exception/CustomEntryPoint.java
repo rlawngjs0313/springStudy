@@ -2,8 +2,6 @@ package com.example.springstudy.global.auth.exception;
 
 import com.example.springstudy.domain.user.exception.code.UserErrorCode;
 import com.example.springstudy.global.apiPayload.ApiResponse;
-import com.example.springstudy.global.apiPayload.code.BaseErrorCode;
-import com.example.springstudy.global.apiPayload.code.ErrorStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

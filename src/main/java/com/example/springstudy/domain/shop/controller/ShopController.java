@@ -7,7 +7,6 @@ import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.apiPayload.code.BaseCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Request;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

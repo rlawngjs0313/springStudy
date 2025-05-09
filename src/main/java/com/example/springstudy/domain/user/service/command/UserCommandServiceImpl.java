@@ -8,7 +8,6 @@ import com.example.springstudy.domain.user.exception.UserException;
 import com.example.springstudy.domain.user.exception.code.UserErrorCode;
 import com.example.springstudy.domain.user.repository.UserRepository;
 import com.example.springstudy.global.auth.service.command.TokenCommandService;
-import com.example.springstudy.global.auth.service.query.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
