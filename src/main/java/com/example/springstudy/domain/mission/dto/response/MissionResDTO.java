@@ -1,13 +1,30 @@
 package com.example.springstudy.domain.mission.dto.response;
 
+import com.example.springstudy.domain.mission.enums.MissionCurrent;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class MissionResDTO {
 
     @Builder
-    public record MissionDTO(int missionScore, int missionRq, String shopName, Long missionId) {}
+    public record MissionDTO(
+            Long missionScore,
+            Long missionRq,
+            String shopName,
+            Long missionId
+    ) {}
+
+    @Builder
+    public record MissionInprogress(
+            Enum<MissionCurrent> missionCurrent,
+            Long missionScore,
+            Long missionRq,
+            String shopName,
+            Long missionId,
+            LocalDateTime createdAt
+    ){}
 
     @Builder
     public record HomePageMissionDTO(
@@ -21,7 +38,12 @@ public class MissionResDTO {
     ) {}
 
     @Builder
-    public record PageMissionDTO(List<MissionDTO> missionDTOList, Long cursor, int size) {}
+    public record PageMissionDTO<MissionDTO>(
+            List<MissionDTO> missionDTOList,
+            boolean hasNext,
+            Long cursor,
+            int size
+    ) {}
 
     @Builder
     public record HomePageDTO(

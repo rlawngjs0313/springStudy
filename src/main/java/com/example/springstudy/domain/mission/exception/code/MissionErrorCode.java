@@ -14,7 +14,10 @@ public enum MissionErrorCode implements BaseErrorCode {
             "미션을 찾지 못했습니다."),
     NOT_BEFORE_PROGRESS(HttpStatus.BAD_REQUEST,
             "MISSION400_0",
-            "미션 도전을 할 수 없습니다.");
+            "미션 도전을 할 수 없습니다."),
+    ALREADY_COMPLETED(HttpStatus.BAD_REQUEST,
+            "MISSION400_1",
+            "이미 완료한 미션입니다.");
 
     private final HttpStatus status;
     private final String code;

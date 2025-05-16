@@ -28,6 +28,9 @@ public class User extends BaseEntity {
     @Column(name = "pwd")
     private String pwd;
 
+    @Column(name = "nickname", length = 10)
+    private String nickname;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserFavorite> userFavoriteList;
 

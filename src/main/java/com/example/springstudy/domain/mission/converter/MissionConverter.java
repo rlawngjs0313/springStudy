@@ -33,19 +33,6 @@ public class MissionConverter {
               .build();
     }
 
-    // List<MissionDTO> -> PageMissionDTO
-    public static MissionResDTO.PageMissionDTO toPageMissionDTO(
-            List<MissionResDTO.MissionDTO> MissionList,
-            Long cursor,
-            int size
-    ) {
-        return MissionResDTO.PageMissionDTO.builder()
-                .missionDTOList(MissionList)
-                .cursor(cursor)
-                .size(size)
-                .build();
-    }
-
     // HomePageInfo + List<MissionDTO> + PageInfo -> HomePageDTO
     public static MissionResDTO.HomePageDTO toHomePageDTO(
             List<MissionResDTO.HomePageMissionDTO> HomePageList,
@@ -59,6 +46,36 @@ public class MissionConverter {
                 .missionCnt(missionCnt)
                 .cursor(cursor)
                 .userPoint(userPoint)
+                .size(size)
+                .build();
+    }
+
+    // 미션 목록 조회
+    public static MissionResDTO.PageMissionDTO<MissionResDTO.MissionDTO> toPageMissionDTO(
+            List<MissionResDTO.MissionDTO> missionList,
+            boolean hasNext,
+            Long cursor,
+            int size
+    ){
+        return MissionResDTO.PageMissionDTO.<MissionResDTO.MissionDTO>builder()
+                .missionDTOList(missionList)
+                .hasNext(hasNext)
+                .cursor(cursor)
+                .size(size)
+                .build();
+    }
+
+    // 미션 진행 상황 페이지네이션
+    public static MissionResDTO.PageMissionDTO<MissionResDTO.MissionInprogress> toPageMissionInprogress(
+            List<MissionResDTO.MissionInprogress> missionInprogressList,
+            boolean hasNext,
+            Long cursor,
+            int size
+    ){
+        return MissionResDTO.PageMissionDTO.<MissionResDTO.MissionInprogress>builder()
+                .missionDTOList(missionInprogressList)
+                .hasNext(hasNext)
+                .cursor(cursor)
                 .size(size)
                 .build();
     }
