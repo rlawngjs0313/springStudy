@@ -22,9 +22,6 @@ public class UserInfo extends BaseEntity {
     @Column(name = "user_point", nullable = false)
     private int userPoint;
 
-    @Column(name = "nickname", length = 10)
-    private String nickname;
-
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;

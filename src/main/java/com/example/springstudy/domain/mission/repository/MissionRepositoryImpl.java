@@ -5,9 +5,13 @@ import com.example.springstudy.domain.mission.dto.request.MissionReqDTO;
 import com.example.springstudy.domain.mission.dto.response.MissionResDTO;
 import com.example.springstudy.domain.mission.entity.QMission;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
+import com.example.springstudy.domain.mission.exception.MissionException;
+import com.example.springstudy.domain.mission.exception.code.MissionErrorCode;
 import com.example.springstudy.domain.shop.entity.QShop;
 import com.example.springstudy.domain.user.entity.QUser;
 import com.example.springstudy.global.mapping.QUserMission;
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
@@ -242,5 +246,86 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom {
                 .fetchOne();
     }
 
+    // 특정 가게 미션 조회
+    @Override
+    public MissionResDTO.PageMissionDTO<MissionResDTO.MissionDTO> findByShopId(
+            Predicate subQuery,
+            int size
+    ) {
+        QMission mission = QMission.mission;
 
+        List<MissionResDTO.MissionDTO> missions = queryFactory
+                .from(mission)
+                .where(subQuery)
+                .orderBy(mission.id.desc())
+                .limit(size+1)
+                .transform(GroupBy.groupBy(mission.id).list(
+                        Projections.constructor(
+                                MissionResDTO.MissionDTO.class,
+                                mission.missionScore,
+                                mission.missionReq,
+                                mission.shop.shopName,
+                                mission.id
+                        )
+                ));
+
+        if (missions.isEmpty()) {
+            throw new MissionException(MissionErrorCode.NOT_FOUND);
+        }
+
+        boolean hasNext = missions.size() > size;
+        int pageSize = Math.min(missions.size(), size);
+        Long cursor = missions.get(missions.size()-1).missionId();
+
+        missions = missions.subList(0, pageSize);
+        return MissionConverter.toPageMissionDTO(
+                missions,
+                hasNext,
+                cursor,
+                pageSize
+        );
+    }
+
+    // 내가 진행중인 미션 목록 조회
+    @Override
+    public MissionResDTO.PageMissionDTO<MissionResDTO.MissionInprogress> findMyMissionInProgress(
+            Predicate subQuery,
+            int size
+    ){
+        QMission mission = QMission.mission;
+        QUserMission userMission = QUserMission.userMission;
+
+        List<MissionResDTO.MissionInprogress> missions = queryFactory
+                .from(mission)
+                .leftJoin(userMission).on(userMission.mission.id.eq(mission.id))
+                .where(subQuery)
+                .orderBy(mission.id.desc())
+                .limit(size+1)
+                .transform(GroupBy.groupBy(mission.id).list(
+                        Projections.constructor(
+                                MissionResDTO.MissionInprogress.class,
+                                userMission.missionCurrent,
+                                mission.missionScore,
+                                mission.missionReq,
+                                mission.shop.shopName,
+                                mission.id,
+                                userMission.updatedAt
+                        )
+                ));
+        if (missions.isEmpty()) {
+            throw new MissionException(MissionErrorCode.NOT_FOUND);
+        }
+
+        boolean hasNext = missions.size() > size;
+        int pageSize = Math.min(missions.size(), size);
+        Long cursor = missions.get(missions.size()-1).missionId();
+
+        missions = missions.subList(0, pageSize);
+        return MissionConverter.toPageMissionInprogress(
+                missions,
+                hasNext,
+                cursor,
+                pageSize
+        );
+    }
 }

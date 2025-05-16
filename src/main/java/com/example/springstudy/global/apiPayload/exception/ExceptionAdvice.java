@@ -1,7 +1,5 @@
 package com.example.springstudy.global.apiPayload.exception;
 
-import com.example.springstudy.domain.mission.exception.code.MissionErrorCode;
-import com.example.springstudy.domain.shop.exception.code.ShopErrorCode;
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.apiPayload.code.BaseErrorCode;
 import com.example.springstudy.global.apiPayload.code.ErrorStatus;
@@ -56,16 +54,18 @@ public class ExceptionAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> ConstraintViolationException(ConstraintViolationException e) {
         log.warn("ConstraintViolationException: {}", e.getMessage());
-        // Exception 검증 : Exception message로 ErrorCode 유추
         BaseErrorCode code = ErrorStatus.BAD_REQUEST;
-        String message = e.getConstraintViolations().iterator().next().getMessage();
-        if (message.contains("상점")) {
-            code = ShopErrorCode.NOT_FOUND;
-        }
-        if (message.contains("미션")){
-            code = MissionErrorCode.NOT_BEFORE_PROGRESS;
-        }
-        ApiResponse<String> response = ApiResponse.onFailure(code.getCode(), code.getMessage(), null);
+        List<Map<String, String>> errors = e.getConstraintViolations().stream()
+                .map(violation -> {
+                    Map<String, String> errorMap = new HashMap<>();
+                    String propertyPath = violation.getPropertyPath().toString();
+                    String field = propertyPath.substring(propertyPath.lastIndexOf('.') + 1);
+                    errorMap.put(field, violation.getMessage());
+                    return errorMap;
+                })
+                .toList();
+
+        ApiResponse<List<Map<String, String>>> response = ApiResponse.onFailure(code.getCode(), code.getMessage(), errors);
         return ResponseEntity.status(code.getStatus()).body(response);
     }
 

@@ -4,6 +4,7 @@ package com.example.springstudy.global.mapping;
 import com.example.springstudy.domain.mission.entity.Mission;
 import com.example.springstudy.domain.mission.enums.MissionCurrent;
 import com.example.springstudy.domain.user.entity.User;
+import com.example.springstudy.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "user_mission")
-public class UserMission {
+public class UserMission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
