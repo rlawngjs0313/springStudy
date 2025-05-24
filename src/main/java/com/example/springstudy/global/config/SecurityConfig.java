@@ -4,11 +4,13 @@ import com.example.springstudy.global.auth.exception.CustomAccessDeniedHandler;
 import com.example.springstudy.global.auth.exception.CustomEntryPoint;
 import com.example.springstudy.global.auth.filter.JwtFilter;
 import com.example.springstudy.global.auth.service.query.CustomUserDetailsService;
-import com.example.springstudy.global.util.JwtUtil;
+import com.example.springstudy.global.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
+@EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -28,7 +31,10 @@ public class SecurityConfig {
 
     // 아래 3개는 Swagger에 대한 URL
     private final String[] allowUrl = {
+            "/test/**",
+            "/images/**",
             "/auth/**",
+            "/oauth2/**",
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/v3/api-docs/**",
@@ -40,12 +46,14 @@ public class SecurityConfig {
                 // 어떤 URL에 Security를 걸 것인지 permitAll을 허용, hasRole은 특정 role이 있어야 허용, authenticated는 인증 필요
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(allowUrl).permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 // CSRF 비활성화
                 .csrf(AbstractHttpConfigurer::disable)
                 // Http Basic 인증 방식 비활성화
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .oauth2Login(Customizer.withDefaults())
                 // JwtFilter 추가
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 예외 처리
@@ -53,20 +61,15 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                 )
-//                // formLogin 설정
-//                .formLogin(formLogin -> formLogin
-//                        // Form login에서 사용하는 SecurityContextRepository 설정
-//                        .securityContextRepository(securityContextRepository())
-//                        // 로그인 성공 시 URL, 보통은 SuccessfulHandler를 많이 사용하지만 간단하게 보기 위해 이 방식 사용
-//                        .defaultSuccessUrl("/swagger-ui/index.html")
+//                .formLogin((form) -> form
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/home", true)
+//                        .permitAll()
 //                )
-//                // 세션 관리 방식 설정, IF_REQUIRED는 필요 시에만 세션을 생성
-//                .sessionManagement(sessionManagement -> sessionManagement
-//                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-//                )
-//                // SecurityContext에서 사용할 SecurityContextRepository 설정
-//                .securityContext(context -> context
-//                        .securityContextRepository(securityContextRepository())
+//                .logout((logout) -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout")
+//                        .permitAll()
 //                )
         ;
 

@@ -3,7 +3,7 @@ package com.example.springstudy.global.auth.service.command;
 import com.example.springstudy.domain.user.converter.UserConverter;
 import com.example.springstudy.domain.user.dto.response.UserResDTO;
 import com.example.springstudy.domain.user.entity.User;
-import com.example.springstudy.global.util.JwtUtil;
+import com.example.springstudy.global.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

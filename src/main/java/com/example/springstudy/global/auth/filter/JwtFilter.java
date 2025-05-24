@@ -3,7 +3,7 @@ package com.example.springstudy.global.auth.filter;
 
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.auth.service.query.CustomUserDetailsService;
-import com.example.springstudy.global.util.JwtUtil;
+import com.example.springstudy.global.auth.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
