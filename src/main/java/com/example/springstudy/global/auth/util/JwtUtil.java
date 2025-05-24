@@ -1,4 +1,4 @@
-package com.example.springstudy.global.util;
+package com.example.springstudy.global.auth.util;
 
 import com.example.springstudy.domain.user.entity.User;
 import io.jsonwebtoken.Claims;

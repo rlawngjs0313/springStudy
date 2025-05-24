@@ -4,10 +4,11 @@ import com.example.springstudy.global.auth.exception.CustomAccessDeniedHandler;
 import com.example.springstudy.global.auth.exception.CustomEntryPoint;
 import com.example.springstudy.global.auth.filter.JwtFilter;
 import com.example.springstudy.global.auth.service.query.CustomUserDetailsService;
-import com.example.springstudy.global.util.JwtUtil;
+import com.example.springstudy.global.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -30,11 +31,10 @@ public class SecurityConfig {
 
     // 아래 3개는 Swagger에 대한 URL
     private final String[] allowUrl = {
-            "/",
-            "/home",
-            "/signup",
-            "/css/**",
+            "/test/**",
+            "/images/**",
             "/auth/**",
+            "/oauth2/**",
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/v3/api-docs/**",
@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Http Basic 인증 방식 비활성화
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .oauth2Login(Customizer.withDefaults())
                 // JwtFilter 추가
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 // 예외 처리

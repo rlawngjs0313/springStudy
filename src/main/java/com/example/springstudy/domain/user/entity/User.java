@@ -1,5 +1,6 @@
 package com.example.springstudy.domain.user.entity;
 
+import com.example.springstudy.domain.user.enums.SocialLogin;
 import com.example.springstudy.global.auth.enums.Role;
 import com.example.springstudy.global.entity.BaseEntity;
 import com.example.springstudy.global.mapping.UserAsk;
@@ -26,12 +27,16 @@ public class User extends BaseEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "pwd", nullable = false)
+    @Column(name = "pwd")
     private String pwd;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "social_login")
+    @Enumerated(EnumType.STRING)
+    private SocialLogin socialLogin;
 
     @Column(name = "nickname", length = 10)
     private String nickname;

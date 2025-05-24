@@ -6,7 +6,7 @@ import com.example.springstudy.domain.user.entity.User;
 import com.example.springstudy.domain.user.entity.UserFavorite;
 import com.example.springstudy.domain.user.entity.UserInfo;
 import com.example.springstudy.domain.user.enums.Food;
-import com.example.springstudy.domain.user.enums.Gender;
+import com.example.springstudy.domain.user.enums.SocialLogin;
 import com.example.springstudy.global.auth.enums.Role;
 
 public class UserConverter {
@@ -57,6 +57,15 @@ public class UserConverter {
                 .email(email)
                 .name(userInfo.getName())
                 .gender(userInfo.getGender())
+                .build();
+    }
+
+    // OAuth -> User
+    public static User toUser(String email, Role role, SocialLogin socialLogin) {
+        return User.builder()
+                .email(email)
+                .role(role)
+                .socialLogin(socialLogin)
                 .build();
     }
 }
