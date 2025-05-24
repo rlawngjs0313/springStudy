@@ -28,5 +28,9 @@
  + ${googleClientId} + '&redirect_uri=' + ${googleRedirectUri} + '&scope=' + ${googleScope}">
     <img src="/images/google_login.png" alt="Google 로그인" class="login-img">
 </a>
+<a th:href="'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id='
+ + ${naverClientId} + '&redirect_uri=' + ${naverRedirectUri} + '&state=' + ${state}">
+    <img src="/images/naver_login.png" alt="Naver 로그인" class="login-img">
+</a>
 </body>
 </html>

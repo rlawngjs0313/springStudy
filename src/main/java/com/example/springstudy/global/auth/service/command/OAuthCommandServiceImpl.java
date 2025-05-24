@@ -5,16 +5,12 @@ import com.example.springstudy.domain.user.dto.response.UserResDTO;
 import com.example.springstudy.domain.user.entity.User;
 import com.example.springstudy.domain.user.enums.SocialLogin;
 import com.example.springstudy.domain.user.repository.UserRepository;
-import com.example.springstudy.global.auth.client.GoogleAuthClient;
-import com.example.springstudy.global.auth.client.GoogleUserClient;
-import com.example.springstudy.global.auth.client.KakaoAuthClient;
-import com.example.springstudy.global.auth.client.KakaoUserClient;
+import com.example.springstudy.global.auth.client.*;
 import com.example.springstudy.global.auth.dto.response.OAuthResDTO;
 import com.example.springstudy.global.auth.enums.Role;
 import com.example.springstudy.global.auth.exception.OAuthException;
 import com.example.springstudy.global.auth.exception.code.OAuthErrorCode;
 import com.example.springstudy.global.auth.util.JwtUtil;
-import io.swagger.v3.oas.annotations.info.Contact;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,6 +24,8 @@ public class OAuthCommandServiceImpl implements OAuthCommandService{
     private final KakaoUserClient kakaoUserClient;
     private final GoogleAuthClient googleAuthClient;
     private final GoogleUserClient googleUserClient;
+    private final NaverAuthClient naverAuthClient;
+    private final NaverUserClient naverUserClient;
     private final JwtUtil jwtUtil;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -48,10 +46,17 @@ public class OAuthCommandServiceImpl implements OAuthCommandService{
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String googleClientSecret;
 
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String naverClientId;
+
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    private String naverClientSecret;
+
     @Override
     public UserResDTO.UserLogin login(
             String code,
-            String provider
+            String provider,
+            String state
     ){
         String email;
         String accessToken;
@@ -68,6 +73,11 @@ public class OAuthCommandServiceImpl implements OAuthCommandService{
                 accessToken = getGoogleToken(code);
                 email = getGoogleUserInfo(accessToken);
                 socialLogin = SocialLogin.GOOGLE;
+                break;
+            case "naver":
+                accessToken = getNaverToken(code, state);
+                email = getNaverUserInfo(accessToken);
+                socialLogin = SocialLogin.NAVER;
                 break;
             default:
                 throw new OAuthException(OAuthErrorCode.OAUTH_PROVIDER_NOT_FOUND);
@@ -130,6 +140,31 @@ public class OAuthCommandServiceImpl implements OAuthCommandService{
     private String getGoogleUserInfo(String token) {
         try {
             return googleUserClient.getGoogleUser(token).email();
+        } catch (Exception e) {
+            throw new OAuthException(OAuthErrorCode.OAUTH_USER_INFO_FAIL);
+        }
+    }
+
+    // 네이버 토큰 발급
+    private String getNaverToken(String code, String state) {
+        try {
+            return "Bearer " + naverAuthClient.getNaverToken(
+                    "authorization_code",
+                    naverClientId,
+                    naverClientSecret,
+                    code,
+                    state
+            ).access_token();
+        } catch (Exception e) {
+            throw new OAuthException(OAuthErrorCode.OAUTH_TOKEN_FAIL);
+        }
+    }
+
+    // 네이버 회원 조회
+    private String getNaverUserInfo(String token) {
+        try {
+            OAuthResDTO.NaverUser user = naverUserClient.getNaverUser(token);
+            return user.response().email();
         } catch (Exception e) {
             throw new OAuthException(OAuthErrorCode.OAUTH_USER_INFO_FAIL);
         }

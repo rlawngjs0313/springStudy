@@ -13,6 +13,7 @@ public enum UserErrorCode implements BaseErrorCode {
     WRONG_ID_OR_PWD(HttpStatus.BAD_REQUEST, "USER400_0", "아이디 혹은 비밀번호가 틀렸습니다."),
     ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER400_1", "이미 존재하는 아이디입니다."),
     FORBIDDEN(HttpStatus.FORBIDDEN, "USER403", "해당 유저의 접근 권한이 없습니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "USER400", "잘못된 요청입니다."),
     UNAUTH(HttpStatus.UNAUTHORIZED, "USER401", "로그인이 필요합니다.");
 
     private final HttpStatus status;

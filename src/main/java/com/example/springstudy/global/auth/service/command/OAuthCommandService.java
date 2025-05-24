@@ -6,6 +6,7 @@ public interface OAuthCommandService {
 
     UserResDTO.UserLogin login(
             String code,
-            String provider
+            String provider,
+            String state
     );
 }

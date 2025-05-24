@@ -1,11 +1,12 @@
 package com.example.springstudy.domain.user.controller;
 
 import com.example.springstudy.domain.user.dto.response.UserResDTO;
+import com.example.springstudy.domain.user.exception.code.UserErrorCode;
 import com.example.springstudy.domain.user.exception.code.UserSuccessCode;
 import com.example.springstudy.global.apiPayload.ApiResponse;
 import com.example.springstudy.global.auth.service.command.OAuthCommandService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ public class OAuthController {
         return ApiResponse.onSuccess(
                 successCode.getCode(),
                 successCode.getMessage(),
-                oAuthCommandService.login(code, "kakao")
+                oAuthCommandService.login(code, "kakao", null)
         );
     }
 
@@ -38,7 +39,30 @@ public class OAuthController {
         return ApiResponse.onSuccess(
                 successCode.getCode(),
                 successCode.getMessage(),
-                oAuthCommandService.login(code, "google")
+                oAuthCommandService.login(code, "google", null)
+        );
+    }
+
+    @GetMapping("/naver")
+    public ApiResponse<UserResDTO.UserLogin> naverCallback(
+            @RequestParam(value = "code") String code,
+            @RequestParam(value = "state") String state,
+            HttpSession session
+    ) {
+
+        // state 검증
+        if (!state.equals(session.getAttribute("state"))){
+            return ApiResponse.onFailure(
+                    UserErrorCode.BAD_REQUEST.getCode(),
+                    UserErrorCode.BAD_REQUEST.getMessage(),
+                    null
+            );
+        }
+        UserSuccessCode successCode = UserSuccessCode.LOGIN;
+        return ApiResponse.onSuccess(
+                successCode.getCode(),
+                successCode.getMessage(),
+                oAuthCommandService.login(code, "naver", state)
         );
     }
 }

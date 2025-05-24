@@ -74,4 +74,35 @@ public class OAuthResDTO {
             String email,
             String picture
     ){}
+
+    // 네이버
+    @Builder
+    public record NaverToken(
+            String access_token,
+            String refresh_token,
+            String token_type,
+            Integer expires_in,
+            String error,
+            String error_description
+    ){}
+
+    @Builder
+    public record NaverUser(
+            String resultcode,
+            String message,
+            NaverResponse response
+    ){}
+
+    public record NaverResponse(
+            String id,
+            String nickname,
+            String name,
+            String email,
+            String gender,
+            String age,
+            String birthday,
+            String profile_image,
+            String birthyear,
+            String mobile
+    ){}
 }
