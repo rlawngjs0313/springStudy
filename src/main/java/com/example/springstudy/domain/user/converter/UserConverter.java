@@ -6,6 +6,7 @@ import com.example.springstudy.domain.user.entity.User;
 import com.example.springstudy.domain.user.entity.UserFavorite;
 import com.example.springstudy.domain.user.entity.UserInfo;
 import com.example.springstudy.domain.user.enums.Food;
+import com.example.springstudy.domain.user.enums.Gender;
 import com.example.springstudy.global.auth.enums.Role;
 
 public class UserConverter {
@@ -44,6 +45,18 @@ public class UserConverter {
         return UserResDTO.UserLogin.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .build();
+    }
+
+    // User -> UserInfoDTO
+    public static UserResDTO.UserInfo toUserInfoDTO(
+            String email,
+            UserInfo userInfo
+    ){
+        return UserResDTO.UserInfo.builder()
+                .email(email)
+                .name(userInfo.getName())
+                .gender(userInfo.getGender())
                 .build();
     }
 }

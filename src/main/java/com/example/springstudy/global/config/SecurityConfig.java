@@ -49,27 +49,28 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-//                // CSRF 비활성화
-//                .csrf(AbstractHttpConfigurer::disable)
-//                // Http Basic 인증 방식 비활성화
-//                .httpBasic(AbstractHttpConfigurer::disable)
-//                // JwtFilter 추가
-//                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
-//                // 예외 처리
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint(customEntryPoint)
-//                        .accessDeniedHandler(customAccessDeniedHandler)
-//                )
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
-                        .permitAll()
+                // CSRF 비활성화
+                .csrf(AbstractHttpConfigurer::disable)
+                // Http Basic 인증 방식 비활성화
+                .httpBasic(AbstractHttpConfigurer::disable)
+                // JwtFilter 추가
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                // 예외 처리
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
                 )
-                .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
+//                .formLogin((form) -> form
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/home", true)
+//                        .permitAll()
+//                )
+//                .logout((logout) -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout")
+//                        .permitAll()
+//                )
+        ;
 
         return http.build();
     }

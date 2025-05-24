@@ -28,6 +28,9 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Transactional
     public void signUp(UserReqDTO.SignUp dto) {
         String pwd = passwordEncoder.encode(dto.password());
+        if (userRepository.existsByEmail(dto.email())) {
+            throw new UserException(UserErrorCode.ALREADY_EXISTS);
+        }
 
         User user = userRepository.save(UserConverter.toUser(dto, pwd));
         userInfoReposiroty.save(UserConverter.toUserInfo(dto, user));
