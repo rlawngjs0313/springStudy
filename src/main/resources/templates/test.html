@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>카카오 OAuth2 로그인 테스트</title>
+    <title>OAuth2 로그인 테스트</title>
     <style>
         body {
             min-height: 100vh;
@@ -19,9 +19,14 @@
     </style>
 </head>
 <body>
-<h1>카카오 OAuth2 로그인 테스트</h1>
-<a th:href="'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=' + ${kakaoApiKey} + '&redirect_uri=' + ${kakaoRedirectUri}">
+<h1>OAuth2 로그인 테스트</h1>
+<a th:href="'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id='
+ + ${kakaoApiKey} + '&redirect_uri=' + ${kakaoRedirectUri}">
     <img src="/images/kakao_login.png" alt="Kakao 로그인" class="login-img">
+</a>
+<a th:href="'https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id='
+ + ${googleClientId} + '&redirect_uri=' + ${googleRedirectUri} + '&scope=' + ${googleScope}">
+    <img src="/images/google_login.png" alt="Google 로그인" class="login-img">
 </a>
 </body>
 </html>

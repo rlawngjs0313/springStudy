@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public class OAuthResDTO {
 
+    // 카카오
     @Builder
     public record KakaoToken(
             String token_type,
@@ -50,5 +51,27 @@ public class OAuthResDTO {
             String profile_image_url,
             Boolean is_default_image,
             Boolean is_default_nickname
+    ){}
+
+    // 구글
+    @Builder
+    public record GoogleToken(
+            String access_token,
+            Integer expires_in,
+            String refresh_token,
+            Integer refresh_token_expires_in,
+            String scope,
+            String token_type
+    ){}
+
+    @Builder
+    public record GoogleUser(
+            Long sub,
+            String name,
+            String given_name,
+            String family_name,
+            String preferred_username,
+            String email,
+            String picture
     ){}
 }
