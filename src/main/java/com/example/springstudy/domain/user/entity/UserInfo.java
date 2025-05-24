@@ -19,7 +19,7 @@ public class UserInfo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_point", nullable = false)
+    @Column(name = "user_point")
     private int userPoint;
 
     @Column(name = "gender", nullable = false)
@@ -29,13 +29,13 @@ public class UserInfo extends BaseEntity {
     @Column(name = "birth", nullable = false)
     private LocalDate birth;
 
-    @Column(name = "city", nullable = false)
-    private String city;
+    @Column(name = "spec_address", nullable = false)
+    private String specAddress;
 
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "name", nullable = false, length = 4)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "phone_num", length = 13)

@@ -8,10 +8,9 @@ import com.example.springstudy.global.apiPayload.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,12 +21,22 @@ public class UserController {
     private final UserCommandServiceImpl userCommandService;
 
     @PostMapping("/sign-up")
-    public ApiResponse<Void> signUp(
-            @Valid @RequestBody UserReqDTO.SignUp dto
+    public String signUp(
+            @Valid @ModelAttribute UserReqDTO.SignUp dto,
+            BindingResult bindingResult,
+            Model model
     ) {
-        userCommandService.signUp(dto);
-        UserSuccessCode code = UserSuccessCode.SIGN_UP;
-        return ApiResponse.onSuccess(code.getCode(), code.getMessage(), null);
+        if (bindingResult.hasErrors()) {
+            return "signup";
+        }
+
+        try {
+            userCommandService.signUp(dto);
+            return "redirect:/login";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "signup";
+        }
     }
 
     @PostMapping("/login")
